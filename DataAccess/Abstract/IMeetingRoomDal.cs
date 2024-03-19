@@ -1,5 +1,4 @@
-﻿using DataAccess.Concrete;
-using Entities.Concrete;
+﻿using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Abstract
 {
-    public interface IEquipmentDal : IEntityRepository<Equipment>
+    public interface IMeetingRoomDal:IEntityRepository<MeetingRoom>
     {
     }
 }
