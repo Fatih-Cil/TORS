@@ -9,7 +9,7 @@ namespace Entities.Concrete
     public class BaseEntity<TId>
     {
         public TId Id { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         virtual public DateTime? UpdatedDate { get; set; }
     }
 }
