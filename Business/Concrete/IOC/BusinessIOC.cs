@@ -28,6 +28,12 @@ namespace Business.Concrete.IOC
             services.AddSingleton<IRuleService, RuleManager>();
             services.AddSingleton<IRuleDal, RuleDal>();
 
+            services.AddSingleton<IUserService, UserManager>();
+            services.AddSingleton<IUserDal, UserDal>();
+
+            services.AddSingleton<IEquipmentRoomService, EquipmentMeetingRoomManager>();
+            services.AddSingleton<IEquipmentRoomDal, EquipmentRoomDal>();
+
         }
     }
 }

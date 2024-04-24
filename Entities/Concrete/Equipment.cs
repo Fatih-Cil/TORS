@@ -11,6 +11,7 @@ namespace Entities.Concrete
     {
         public string Name { get; set; }
 
-        public ICollection<MeetingRoom> MeetingRooms { get; set; }
+        public ICollection<EquipmentMeetingRoom> EquipmentMeetingRooms { get; set; }
+
     }
 }

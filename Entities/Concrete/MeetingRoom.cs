@@ -16,7 +16,8 @@ namespace Entities.Concrete
         public bool IsActive { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
-        public ICollection<Equipment> Equipment { get; set; }
+        
         public ICollection<Rule> Rules { get; set; }
+        public ICollection<EquipmentMeetingRoom> EquipmentMeetingRooms { get; set; }
     }
 }

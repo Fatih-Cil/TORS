@@ -21,6 +21,7 @@ namespace DataAccess.Concrete
         public DbSet<MeetingRoom> MeetingRooms { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Rule> Rules { get; set; }
+        public DbSet<EquipmentMeetingRoom> EquipmentMeetingRooms { get; set; }
 
     }
 }

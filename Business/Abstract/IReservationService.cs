@@ -11,8 +11,9 @@ namespace Business.Abstract
     {
         List<Reservation> GetAll();
         Reservation GetById(int id);
-        void AddReservation(Reservation reservation);
+        bool AddReservation(Reservation reservation);
         void RemoveReservation(Reservation reservation);
         void UpdateReservation(Reservation reservation);
+        bool CheckReservationTime(DateTime start,DateTime finish,int meetingRoomId);
     }
 }

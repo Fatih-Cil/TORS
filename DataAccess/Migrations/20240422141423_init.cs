@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,8 +18,8 @@ namespace DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,8 +51,8 @@ namespace DataAccess.Migrations
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     MinParticipant = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -68,8 +68,8 @@ namespace DataAccess.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,8 +87,8 @@ namespace DataAccess.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,24 +96,28 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EquipmentMeetingRoom",
+                name: "EquipmentMeetingRooms",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EquipmentId = table.Column<int>(type: "int", nullable: false),
-                    MeetingRoomsId = table.Column<int>(type: "int", nullable: false)
+                    MeetingRoomId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EquipmentMeetingRoom", x => new { x.EquipmentId, x.MeetingRoomsId });
+                    table.PrimaryKey("PK_EquipmentMeetingRooms", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EquipmentMeetingRoom_Equipment_EquipmentId",
+                        name: "FK_EquipmentMeetingRooms_Equipment_EquipmentId",
                         column: x => x.EquipmentId,
                         principalTable: "Equipment",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EquipmentMeetingRoom_MeetingRooms_MeetingRoomsId",
-                        column: x => x.MeetingRoomsId,
+                        name: "FK_EquipmentMeetingRooms_MeetingRooms_MeetingRoomId",
+                        column: x => x.MeetingRoomId,
                         principalTable: "MeetingRooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -154,8 +158,8 @@ namespace DataAccess.Migrations
                     Turnout = table.Column<int>(type: "int", nullable: false),
                     StartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FinishDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -175,9 +179,14 @@ namespace DataAccess.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EquipmentMeetingRoom_MeetingRoomsId",
-                table: "EquipmentMeetingRoom",
-                column: "MeetingRoomsId");
+                name: "IX_EquipmentMeetingRooms_EquipmentId",
+                table: "EquipmentMeetingRooms",
+                column: "EquipmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EquipmentMeetingRooms_MeetingRoomId",
+                table: "EquipmentMeetingRooms",
+                column: "MeetingRoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MeetingRoomRule_RulesId",
@@ -199,7 +208,7 @@ namespace DataAccess.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "EquipmentMeetingRoom");
+                name: "EquipmentMeetingRooms");
 
             migrationBuilder.DropTable(
                 name: "Holidays");

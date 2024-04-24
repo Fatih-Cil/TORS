@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(TorsContext))]
-    [Migration("20240318221335_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240422141423_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,19 +33,48 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Equipment");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.EquipmentMeetingRoom", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EquipmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MeetingRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EquipmentId");
+
+                    b.HasIndex("MeetingRoomId");
+
+                    b.ToTable("EquipmentMeetingRooms");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Holiday", b =>
@@ -79,7 +108,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("Capacity")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -96,7 +125,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -112,7 +141,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FinishDateTime")
@@ -127,7 +156,7 @@ namespace DataAccess.Migrations
                     b.Property<int>("Turnout")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("UserId")
@@ -150,7 +179,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
@@ -164,7 +193,7 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -180,7 +209,7 @@ namespace DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedDate")
+                    b.Property<DateTime?>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
@@ -202,27 +231,12 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UpdatedDate")
+                    b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("EquipmentMeetingRoom", b =>
-                {
-                    b.Property<int>("EquipmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MeetingRoomsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EquipmentId", "MeetingRoomsId");
-
-                    b.HasIndex("MeetingRoomsId");
-
-                    b.ToTable("EquipmentMeetingRoom");
                 });
 
             modelBuilder.Entity("MeetingRoomRule", b =>
@@ -238,6 +252,25 @@ namespace DataAccess.Migrations
                     b.HasIndex("RulesId");
 
                     b.ToTable("MeetingRoomRule");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.EquipmentMeetingRoom", b =>
+                {
+                    b.HasOne("Entities.Concrete.Equipment", "Equipment")
+                        .WithMany("EquipmentMeetingRooms")
+                        .HasForeignKey("EquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Concrete.MeetingRoom", "MeetingRoom")
+                        .WithMany("EquipmentMeetingRooms")
+                        .HasForeignKey("MeetingRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipment");
+
+                    b.Navigation("MeetingRoom");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Reservation", b =>
@@ -259,21 +292,6 @@ namespace DataAccess.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("EquipmentMeetingRoom", b =>
-                {
-                    b.HasOne("Entities.Concrete.Equipment", null)
-                        .WithMany()
-                        .HasForeignKey("EquipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.MeetingRoom", null)
-                        .WithMany()
-                        .HasForeignKey("MeetingRoomsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("MeetingRoomRule", b =>
                 {
                     b.HasOne("Entities.Concrete.MeetingRoom", null)
@@ -289,8 +307,15 @@ namespace DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Entities.Concrete.Equipment", b =>
+                {
+                    b.Navigation("EquipmentMeetingRooms");
+                });
+
             modelBuilder.Entity("Entities.Concrete.MeetingRoom", b =>
                 {
+                    b.Navigation("EquipmentMeetingRooms");
+
                     b.Navigation("Reservations");
                 });
 

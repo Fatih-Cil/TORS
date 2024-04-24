@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Models.EquipmentModel;
+using Business.Models.ReservationModel;
 using Entities.Concrete;
 
 namespace WebAPI.AutoMapper
@@ -10,6 +11,7 @@ namespace WebAPI.AutoMapper
         {
             CreateMap<Equipment, UpdateEquipmentModel>().ReverseMap();
             CreateMap<Equipment, AddEquipmentModel>().ReverseMap();
+            CreateMap<Reservation, AddReservationModel>().ReverseMap(); 
 
         }
     }

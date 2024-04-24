@@ -14,6 +14,7 @@ namespace WebAPI.Controllers
     {
         IEquipmentService _equipmentService;
         IMapper _mapper;
+       
 
         public EquipmentsController(IEquipmentService equipmentService, IMapper mapper)
         {
